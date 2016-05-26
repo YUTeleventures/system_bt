@@ -1924,6 +1924,7 @@ static void btif_dm_upstreams_evt(UINT16 event, char* p_param)
             bdcpy(bd_addr.address, p_data->link_up.bd_addr);
             BTIF_TRACE_DEBUG("BTA_DM_LINK_UP_EVT. Sending BT_ACL_STATE_CONNECTED");
 
+#if BLE_INCLUDED == TRUE
             if(p_data->link_up.link_type == BT_TRANSPORT_LE)
             {
                 num_active_le_links++;
@@ -1951,6 +1952,7 @@ static void btif_dm_upstreams_evt(UINT16 event, char* p_param)
                 btif_av_trigger_suspend();
             }
 
+#endif
             btif_update_remote_version_property(&bd_addr);
 
             HAL_CBACK(bt_hal_cbacks, acl_state_changed_cb, BT_STATUS_SUCCESS,
@@ -1961,7 +1963,7 @@ static void btif_dm_upstreams_evt(UINT16 event, char* p_param)
             bdcpy(bd_addr.address, p_data->link_down.bd_addr);
 
             btm_set_bond_type_dev(p_data->link_down.bd_addr, BOND_TYPE_UNKNOWN);
-
+#if BLE_INCLUDED == TRUE
             BTIF_TRACE_DEBUG("BTA_DM_LINK_DOWN_EVT. Sending BT_ACL_STATE_DISCONNECTED");
             if (num_active_le_links > 0 &&
                 p_data->link_down.link_type == BT_TRANSPORT_LE)
@@ -1976,6 +1978,7 @@ static void btif_dm_upstreams_evt(UINT16 event, char* p_param)
                 num_active_br_edr_links--;
                 BTIF_TRACE_DEBUG("num_active_br_edr_links is %d ",num_active_br_edr_links);
             }
+#endif
             btif_av_move_idle(bd_addr);
             BTIF_TRACE_DEBUG("BTA_DM_LINK_DOWN_EVT. Sending BT_ACL_STATE_DISCONNECTED");
             HAL_CBACK(bt_hal_cbacks, acl_state_changed_cb, BT_STATUS_SUCCESS,
@@ -2853,10 +2856,10 @@ bt_status_t btif_dm_get_remote_services_by_transport(bt_bdaddr_t *remote_addr, c
     mask_ext.num_uuid = 0;
     mask_ext.p_uuid = NULL;
     mask_ext.srvc_mask = BTA_ALL_SERVICE_MASK;
-
+#if BLE_INCLUDED == TRUE
     BTA_DmDiscoverByTransport(remote_addr->address, &mask_ext,
                    bte_dm_search_services_evt, TRUE, transport);
-
+#endif
     return BT_STATUS_SUCCESS;
 }
 
@@ -3165,6 +3168,8 @@ static void btif_dm_ble_auth_cmpl_evt (tBTA_DM_AUTH_CMPL *p_auth_cmpl)
             state = BT_BOND_STATE_NONE;
         } else {
             btif_dm_save_ble_bonding_keys();
+            BTA_GATTC_Refresh(bd_addr.address);
+            btif_dm_get_remote_services_by_transport(&bd_addr, BTA_GATT_TRANSPORT_LE);
         }
         BTA_GATTC_Refresh(bd_addr.address);
         if(!p_auth_cmpl->smp_over_br)
@@ -3558,4 +3563,3 @@ UINT16 btif_dm_get_le_links()
     BTIF_TRACE_DEBUG("LE Link count: %d", num_active_le_links);
     return num_active_le_links;
 }
-
