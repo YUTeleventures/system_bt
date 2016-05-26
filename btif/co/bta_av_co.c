@@ -1,6 +1,7 @@
 /******************************************************************************
  *
  *  Copyright (C) 2004-2012 Broadcom Corporation
+ *  Copyright (c) 2013, Linux Foundation. All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -74,7 +75,7 @@ const UINT8 bta_av_co_cp_scmst[BTA_AV_CP_INFO_LEN] = "\x02\x02\x00";
 /* SBC SRC codec capabilities */
 const tA2D_SBC_CIE bta_av_co_sbc_caps =
 {
-#ifdef BTA_AV_SPLIT_A2DP_DEF_FREQ_48KHZ
+#if defined(SAMPLE_RATE_48K) || defined (BTA_AV_SPLIT_A2DP_DEF_FREQ_48KHZ)
     (A2D_SBC_IE_SAMP_FREQ_48), /* samp_freq */
 #else
     (A2D_SBC_IE_SAMP_FREQ_44), /* samp_freq */
@@ -100,7 +101,7 @@ const tA2D_SBC_CIE bta_av_co_sbc_sink_caps =
 };
 
 #if !defined(BTIF_AV_SBC_DEFAULT_SAMP_FREQ)
-#ifdef BTA_AV_SPLIT_A2DP_DEF_FREQ_48KHZ
+#if defined(SAMPLE_RATE_48K) || defined (BTA_AV_SPLIT_A2DP_DEF_FREQ_48KHZ)
 #define BTIF_AV_SBC_DEFAULT_SAMP_FREQ A2D_SBC_IE_SAMP_FREQ_48
 #else
 #define BTIF_AV_SBC_DEFAULT_SAMP_FREQ A2D_SBC_IE_SAMP_FREQ_44

@@ -1,6 +1,7 @@
 /******************************************************************************
  *
  *  Copyright (C) 2009-2012 Broadcom Corporation
+ *  Copyright (c) 2013, Linux Foundation. All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -928,9 +929,8 @@ tBTIF_STATUS btif_a2dp_setup_codec(void)
 
     GKI_disable();
 
-
-#ifdef BTA_AV_SPLIT_A2DP_DEF_FREQ_48KHZ
-    /* for now hardcode 48 khz 16 bit stereo PCM format */
+#if defined(SAMPLE_RATE_48K) || defined (BTA_AV_SPLIT_A2DP_DEF_FREQ_48KHZ)
+    /* for now hardcode 44/48 khz 16 bit stereo */
     media_feeding.cfg.pcm.sampling_freq = 48000;
 #else
     /* for now hardcode 44.1 khz 16 bit stereo PCM format */

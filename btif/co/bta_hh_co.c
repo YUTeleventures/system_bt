@@ -168,10 +168,7 @@ static void remove_digitizer_descriptor(UINT8 **data, UINT16 *length)
         }
     }
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> 67687e5306dda16a919e75b2093c6812f7255d6f
 void uhid_set_non_blocking(int fd)
 {
     int opts = fcntl(fd, F_GETFL);
@@ -632,11 +629,7 @@ void bta_hh_co_send_hid_info(btif_hh_device_t *p_dev, char *dev_name, UINT16 ven
     if (check_if_dig_desc_to_be_removed(vendor_id, product_id, dev_name))
         remove_digitizer_descriptor(&p_dscp, (UINT16 *)&dscp_len);
 
-<<<<<<< HEAD
     //Create and send hid descriptor to kernel
-=======
-//Create and send hid descriptor to kernel
->>>>>>> 67687e5306dda16a919e75b2093c6812f7255d6f
     memset(&ev, 0, sizeof(ev));
     ev.type = UHID_CREATE;
     strncpy((char*)ev.u.create.name, dev_name, sizeof(ev.u.create.name) - 1);
@@ -847,3 +840,4 @@ void bta_hh_le_co_reset_rpt_cache (BD_ADDR remote_bda, UINT8 app_id)
     BTIF_TRACE_DEBUG("%s() - Reset cache for bda %s", __FUNCTION__, bdstr);
 }
 #endif /* #if (BLE_INCLUDED == TRUE && BTA_HH_LE_INCLUDED == TRUE) */
+

@@ -1503,3 +1503,4 @@ static void btif_jni_disassociate(UNUSED_ATTR uint16_t event, UNUSED_ATTR char *
   bt_hal_cbacks = NULL;
   future_ready(stack_manager_get_hack_future(), FUTURE_SUCCESS);
 }
+
